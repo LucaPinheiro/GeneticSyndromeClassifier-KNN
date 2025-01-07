@@ -27,7 +27,7 @@ def create_dataframe(records):
 
 def save_dataframe(df, file_path):
     df.to_csv(file_path, index=False)
-    print(f"Data successfully saved to {file_path}")
+    print(f"Salvo com sucesso {file_path}")
 
 if __name__ == "__main__":
     file_path = 'data/raw/mini_gm_public_v0.1.p'
