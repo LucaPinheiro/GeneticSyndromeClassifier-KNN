@@ -88,7 +88,7 @@ Foi configurado um pipeline de CI utilizando GitHub Actions para garantir a qual
 
 ### **Configuração do GitHub Actions:**
 
-O arquivo de workflow `.github/workflows/ci.yaml` contém a configuração necessária para rodar o pipeline de CI. Ele inclui etapas para:
+O arquivo de workflow `.github/workflows/deploy.yaml` contém a configuração necessária para rodar o pipeline de CI. Ele inclui etapas para:
 
 1. **Configurar o ambiente Python:**
     ```yaml
@@ -110,6 +110,71 @@ O arquivo de workflow `.github/workflows/ci.yaml` contém a configuração neces
       run: |
          pytest tests/
     ```
+
+    ## 🚀 **Entrega Contínua (CD) com GitHub Actions:**
+
+    Além da Integração Contínua, também configuramos a Entrega Contínua (CD) para automatizar o processo de deploy. Sempre que uma nova versão é mergeada na branch principal, o pipeline de CD é acionado para construir e publicar a nova versão da aplicação na plataforma render que por baixos dos panos roda um EC2 da Amazon.
+
+    ### **Configuração do GitHub Actions para CD:**
+
+    O arquivo de workflow `.github/workflows/deploy.yaml` contém a configuração necessária para rodar o pipeline de CD. Ele inclui etapas para:
+
+    1. **Construir a imagem Docker:**
+        ```yaml
+        - name: Build Docker image
+          run: |
+             docker build -t genetic-syndrome-classifier:latest .
+        ```
+    2. **Publicar a imagem Docker:**
+        ```yaml
+        - name: Push Docker image
+          run: |
+             docker tag genetic-syndrome-classifier:latest your-docker-repo/genetic-syndrome-classifier:latest
+             docker push your-docker-repo/genetic-syndrome-classifier:latest
+        ```
+
+    ---
+
+    ## 🌐 **API com FastAPI:**
+
+    Foi desenvolvida uma API utilizando o framework **FastAPI** para expor o modelo de classificação de síndromes genéticas. A API permite que usuários enviem imagens e recebam as previsões do modelo.
+
+    ### **Configuração da API:**
+
+    A API está localizada em `src/api/` e possui um endpoint principal para realizar previsões.
+
+    ### **Endpoint de Previsão:**
+
+    - **URL:** `/predict`
+    - **Método:** `POST`
+    - **Descrição:** Recebe uma imagem e retorna a classificação da síndrome genética.
+
+    #### **Exemplo de Requisição:**
+
+    ```http
+    POST /predict
+    Content-Type: application/json
+
+    {
+    "embedding": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 
+                  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
+                  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
+                  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
+                  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
+                  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
+                  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
+                  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
+                  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
+                  0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+}
+
+    Para executar a API localmente, utilize o comando:
+
+    ```bash
+    uvicorn main:app --reload
+    ```
+
+    Com essa API, facilitamos a integração do modelo em outras aplicações e serviços, permitindo um acesso mais amplo e prático às previsões.
 
 Com essa configuração, garantimos que o projeto esteja sempre em um estado funcional e que qualquer problema seja detectado rapidamente.
 
