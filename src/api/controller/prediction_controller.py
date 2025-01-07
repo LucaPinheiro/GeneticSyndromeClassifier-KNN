@@ -7,11 +7,11 @@ predict_endpoint = APIRouter()
 
 model = joblib.load("src/models/best_knn_cosine.pkl")
 
-class EmbeddingInput(BaseModel):
+class EmbeddingSchema(BaseModel):
     embedding: list[float]
 
 @predict_endpoint.post("/predict/")
-def predict(data: EmbeddingInput):
+def predict(data: EmbeddingSchema):
     try:
         if len(data.embedding) != 320:
             return {"error": "O vetor de entrada deve ter exatamente 320 dimensões."}
