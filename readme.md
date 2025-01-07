@@ -64,7 +64,7 @@ project
 ## 🧪 **Testes:**
 - Testes estão na pasta `tests/`.  
 - Para rodar os testes:  rode pytest tests/  
-```
+
 ## 🐳 **Dockerização do Projeto:**
 
 Para facilitar a replicação do ambiente e a execução do projeto, foi criado um Dockerfile que containeriza o modelo KNN e todas as suas dependências. Isso garante que o projeto possa ser executado de maneira consistente em qualquer ambiente.
