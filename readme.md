@@ -1,6 +1,6 @@
 # 📦 Projeto de Classificação de Síndromes Genéticas
 
-Este projeto visa concluir o teste de classificação de síndromes genéticas a partir de embeddings de imagens utilizando o algoritmo **K-Nearest Neighbors (KNN)**. A abordagem inclui pré-processamento de dados, visualização exploratória, treinamento de modelo e avaliação de métricas de desempenho.
+Este projeto visa concluir o teste classificação de síndromes genéticas a partir de embeddings de imagens utilizando o algoritmo **K-Nearest Neighbors (KNN)**. A abordagem inclui pré-processamento de dados, visualização exploratória, treinamento de modelo e avaliação de métricas de desempenho.
 
 ## 📊 **Objetivos do Projeto:**
 - **Classificar síndromes genéticas** usando embeddings de imagens.  
@@ -63,9 +63,57 @@ project
 
 ## 🧪 **Testes:**
 - Testes estão na pasta `tests/`.  
-- Para rodar os testes:  rode o main
+- Para rodar os testes:  rode pytest tests/  
 ```
+## 🐳 **Dockerização do Projeto:**
 
+Para facilitar a replicação do ambiente e a execução do projeto, foi criado um Dockerfile que containeriza o modelo KNN e todas as suas dependências. Isso garante que o projeto possa ser executado de maneira consistente em qualquer ambiente.
+
+### **Passos para usar o Docker:**
+
+1. **Construir a imagem Docker:**
+    ```bash
+    docker build -t genetic-syndrome-classifier .
+    ```
+2. **Executar o container:**
+    ```bash
+    docker run -it --rm genetic-syndrome-classifier
+    ```
+
+---
+
+## 🚀 **Integração Contínua (CI) com GitHub Actions:**
+
+Foi configurado um pipeline de CI utilizando GitHub Actions para garantir a qualidade do código e a integridade do projeto. O pipeline executa automaticamente os testes e verifica se o projeto está funcionando corretamente a cada push ou pull request.
+
+### **Configuração do GitHub Actions:**
+
+O arquivo de workflow `.github/workflows/ci.yaml` contém a configuração necessária para rodar o pipeline de CI. Ele inclui etapas para:
+
+1. **Configurar o ambiente Python:**
+    ```yaml
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+         python-version: '3.11'
+    ```
+2. **Instalar dependências:**
+    ```yaml
+    - name: Install dependencies
+      run: |
+         python -m pip install --upgrade pip
+         pip install -r requirements.txt
+    ```
+3. **Executar os testes:**
+    ```yaml
+    - name: Run tests
+      run: |
+         pytest tests/
+    ```
+
+Com essa configuração, garantimos que o projeto esteja sempre em um estado funcional e que qualquer problema seja detectado rapidamente.
+
+---
 ---
 
 ## 📊 **Resultados Principais:**
