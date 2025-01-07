@@ -7,43 +7,46 @@ on:
 
 jobs:
   CI:
-  runs-on: ubuntu-latest
-
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-
-    - name: Install dependencies
-      run: |
-        echo "Installing dependencies"
-        pip install -r requirements.txt
-
-    - name: Run Tests
-      run: |
-        echo "Running Tests"
-        pytest
-
-  CD:
     runs-on: ubuntu-latest
-    needs: CI
-    steps:
-      - name: Checkout código
-        uses: actions/checkout@v3
 
-      - name: Configurar Python
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: Instalar dependências
-        run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
 
-      - name: Rodar Testes
-        run: pytest tests/ --disable-warnings
+      - name: Run Tests
+        run: |
+          pytest --disable-warnings
 
-      - name: Realizar Deploy no Render
-        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+  CD:
+    runs-on: ubuntu-latest
+    needs: CI
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Tests (CD)
+        run: |
+          pytest tests/ --disable-warnings
+
+      - name: Deploy to Render
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
